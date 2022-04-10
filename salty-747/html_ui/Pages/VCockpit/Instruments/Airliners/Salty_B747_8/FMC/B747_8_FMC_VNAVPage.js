@@ -651,9 +651,6 @@ class B747_8_FMC_VNAVPage {
         /* LSK 2L  - Climb Speed */
         let clbSpeedCell = fmc.getClbManagedSpeed(true).toFixed(0);
         let machMode = Simplane.getAutoPilotMachModeActive();
-        if (isNaN(clbSpeedCell)) {
-            clbSpeedCell = "";
-        }
         if (clbMode === 2) {
             clbSpeedCell = SimVar.GetSimVarValue("L:SALTY_VNAV_CLB_SPEED", "knots").toFixed(0);
         }
@@ -680,6 +677,9 @@ class B747_8_FMC_VNAVPage {
                 clbSpeedCell = Simplane.getAutoPilotAirspeedHoldValue().toFixed(0);
             }
             clbSpeedCell += "[color]magenta";
+        }
+        if (isNaN(fmc.cruiseFlightLevel)) {
+            clbSpeedCell = "";
         }
 
         fmc.onLeftInput[1] = () => {
@@ -871,9 +871,6 @@ class B747_8_FMC_VNAVPage {
         let crzSpeedCell = ""
         let crzSpeed = fmc.getCrzManagedSpeed(true);
         let crzMach = fmc.getCrzMach();
-        if (isNaN(crzSpeed) || isNaN(crzMach)) {
-            crzSpeedCell = "";
-        }
         if (crzMach !== 1) {
             crzSpeedCell = crzMach.toFixed(3).substring(1);
         }
@@ -898,6 +895,9 @@ class B747_8_FMC_VNAVPage {
         }
         if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
             crzSpeedCell += "[color]magenta";
+        }
+        if (isNaN(crzSpeed) || isNaN(crzMach)) {
+            crzSpeedCell = "";
         }
         fmc.onLeftInput[1] = () => {
             let value = fmc.inOut;
@@ -1035,9 +1035,6 @@ class B747_8_FMC_VNAVPage {
         /* LSK 2L  - Descent Speed */
         let desSpeedCell = SimVar.GetSimVarValue("L:SALTY_DES_SPEED", "knots").toFixed(0);
         let machMode = Simplane.getAutoPilotMachModeActive();
-        if (isNaN(desSpeedCell)) {
-            desSpeedCell = "";
-        }
         if (Simplane.getCurrentFlightPhase() >= FlightPhase.FLIGHT_PHASE_DESCENT && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "bool") && desMode === 1) {
             if (machMode) {
                 let desMachNo = Simplane.getAutoPilotMachHoldValue().toFixed(3);
@@ -1072,6 +1069,9 @@ class B747_8_FMC_VNAVPage {
             if (altitude > 10500) {
                 desSpeedCell += "[color]magenta";
             }
+        }
+        if (isNaN(fmc.cruiseFlightLevel)) {
+            desSpeedCell = "";
         }
 
         fmc.onLeftInput[1] = () => {
